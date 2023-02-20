@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import './question.dart';
+import './answer.dart';
 
 void main() => runApp(const MyApp());
 
@@ -6,20 +8,30 @@ class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  State<StatefulWidget> createState() => MyAppState();
+  State<StatefulWidget> createState() => _MyAppState();
 }
 
-class MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> {
   var questions = [
-    'Whats your favorite color?',
-    'Whats your favorite animal?',
+    {
+      'questionText': 'What\'s your favorite color?',
+      'answers': ['Black', 'Red', 'Green', 'White'],
+    },
+    {
+      'questionText': 'What\'s your favorite animal?',
+      'answers': ['Rabbit', 'Snake', 'Elephant', 'Lion'],
+    },
+    {
+      'questionText': 'Who\'s your favorite instructor?',
+      'answers': ['Max', 'Max', 'Max', 'Max'],
+    },
   ];
 
-  var questionIndex = 0;
+  var _questionIndex = 0;
 
   void answerQuestion() {
     setState(() {
-      questionIndex++;
+      _questionIndex++;
     });
   }
 
@@ -36,21 +48,13 @@ class MyAppState extends State<MyApp> {
         ),
         body: Column(
           children: <Widget>[
-            Text(
-              questions[questionIndex],
+            Question(
+              questions[_questionIndex]['questionText'].toString(),
             ),
-            ElevatedButton(
-              onPressed: answerQuestion,
-              child: const Text('Answer 1'),
-            ),
-            ElevatedButton(
-              onPressed: answerQuestion,
-              child: const Text('Answer 2'),
-            ),
-            ElevatedButton(
-              onPressed: answerQuestion,
-              child: const Text('Answer 3'),
-            ),
+            ...(questions[_questionIndex]['answers'] as List<String>)
+                .map((answer) {
+              return Answer(answerQuestion, answer);
+            }).toList(),
           ],
         ),
       ),
